@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "kivy-garden-invisible-magnet"
+version = "0.1.0"
+description = ""
+authors = ["Nattōsai Mitō <flow4re2c@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "kivy_garden", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+
+[tool.poetry.group.dev.dependencies]
+kivy = "^2.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
