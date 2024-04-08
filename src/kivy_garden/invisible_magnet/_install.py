@@ -17,7 +17,7 @@ def install(*, speed=10.0, animate_size=False):
 
 
     widgets = []
-    trigger = Clock.create_trigger(partial(batch_magnetize, widgets, _impl[not animate_size][0], speed))
+    trigger = Clock.create_trigger(partial(batch_magnetize, widgets, *_impl[not animate_size], speed))
 
     global magnetize_soon
     magnetize_soon = partial(magnetize_soon, widgets, trigger)
@@ -35,9 +35,10 @@ def magnetize_soon(widgets, trigger, widget):
     trigger()
 
 
-def batch_magnetize(widgets, magnetize, speed, dt):
+def batch_magnetize(widgets, magnetize, unmagnetize, speed, dt):
     from ._main import is_magnetized
     for w in widgets:
         if not is_magnetized(w):
             magnetize(w, speed=speed)
+            w._unmagnetize = unmagnetize
     widgets.clear()
