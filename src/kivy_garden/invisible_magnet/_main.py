@@ -30,6 +30,6 @@ def magnetize(widget, *, speed=10.0, animate_size=False):
 def unmagnetize(widget):
     widget = widget.__self__
     if not is_magnetized(widget):
-        raise ValueError('Not magnetized')
+        return
     widget._unmagnetize(widget)
     del widget._unmagnetize
