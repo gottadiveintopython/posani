@@ -12,6 +12,7 @@ python = "^3.8.1"
 
 [tool.poetry.group.dev.dependencies]
 kivy = "^2.2.1"
+pytest = "^8.1.1"
 
 [build-system]
 requires = ["poetry-core"]
