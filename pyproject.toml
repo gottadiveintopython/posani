@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kivy-garden-invisible-magnet"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Nattōsai Mitō <flow4re2c@gmail.com>"]
 license = "MIT"
