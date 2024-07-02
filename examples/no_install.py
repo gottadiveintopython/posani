@@ -25,11 +25,11 @@ class SampleApp(App):
         return Builder.load_string(KV_CODE)
 
     def on_start(self):
-        from kivy_garden.invisible_magnet import magnetize
+        from kivy_garden.posani import activate
         grid = self.root.ids.grid
         for i in range(grid.cols ** 2):
             button = Button(text=str(i), opacity=0.7, font_size=50)
-            magnetize(button)
+            activate(button)
             grid.add_widget(button)
 
     def shuffle(self):

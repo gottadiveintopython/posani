@@ -1,9 +1,20 @@
+__all__ = (
+    'activate', 'deactivate', 'is_active',
+    'install', 'uninstall', 'uninstall_all',
+)
 from dataclasses import dataclass
 from functools import partial
+
 from kivy.metrics import dp
 from kivy.clock import Clock, ClockEvent
 from kivy.uix.widget import Widget
 from kivy.graphics import Translate
+from kivy.lang import Builder
+
+
+#------------------------------------------------------------------------------------------
+# Core
+#------------------------------------------------------------------------------------------
 
 
 @dataclass(slots=True)
@@ -15,7 +26,13 @@ class Context:
     trigger_anim_pos: ClockEvent = None
 
 
-def magnetize(w: Widget, *, speed=10.0, pos_threshold=dp(2)):
+def is_active(w: Widget) -> bool:
+    return hasattr(w, '_posani_ctx')
+
+
+def activate(w: Widget, *, speed=10.0, pos_threshold=dp(2)):
+    if is_active(w):
+        return
     w.canvas.before.insert(0, mat := Translate())
     w.canvas.after.add(inv_mat := Translate())
     ctx = Context(w.x, w.y, mat, inv_mat)
@@ -23,22 +40,24 @@ def magnetize(w: Widget, *, speed=10.0, pos_threshold=dp(2)):
     ctx.trigger_anim_pos = Clock.create_trigger(
         partial(_anim_pos, ctx, speed, -pos_threshold, pos_threshold), 0, True)
     w.bind(x=_on_x, y=_on_y)
-    w._magnet_ctx = ctx
+    w._posani_ctx = ctx
 
 
-def unmagnetize(w: Widget):
+def deactivate(w: Widget):
+    if not is_active(w):
+        return
     w.unbind(x=_on_x, y=_on_y)
-    ctx = w._magnet_ctx
+    ctx = w._posani_ctx
     w.canvas.before.remove(ctx.mat)
     w.canvas.after.remove(ctx.inv_mat)
     ctx.trigger_anim_pos.cancel()
     # NOTE: break the circular reference
     del ctx.trigger_anim_pos
-    del w._magnet_ctx
+    del w._posani_ctx
 
 
 def _on_x(w, x):
-    ctx: Context = w._magnet_ctx
+    ctx: Context = w._posani_ctx
     mat = ctx.mat
     mat.x = dx = ctx.last_x - x + mat.x
     ctx.inv_mat.x = -dx
@@ -47,7 +66,7 @@ def _on_x(w, x):
 
 
 def _on_y(w, y):
-    ctx: Context = w._magnet_ctx
+    ctx: Context = w._posani_ctx
     mat = ctx.mat
     mat.y = dy = ctx.last_y - y + mat.y
     ctx.inv_mat.y = -dy
@@ -80,3 +99,48 @@ def _anim_pos(ctx: Context, speed, threshold_min, threshold_max, dt):
         still_going = True
 
     return still_going
+
+
+#------------------------------------------------------------------------------------------
+# Installation
+#------------------------------------------------------------------------------------------
+
+_installed = set()
+
+
+def _kv_filename(key):
+    return f"kivy_garden.posani.{key}"
+
+
+INST_STR = '''
+#:import activate kivy_garden.posani.activate
+<{}>:
+    on_kv_post: activate(self)
+'''
+
+
+def install(*, target: str | type='Widget'):
+    if isinstance(target, str):
+        pass
+    else:
+        target = target.__name__
+    if target in _installed:
+        return
+    _installed.add(target)
+    Builder.load_string(INST_STR.format(target), filename=_kv_filename(target))
+
+
+def uninstall(*, target: str | type='Widget'):
+    if isinstance(target, str):
+        pass
+    else:
+        target = target.__name__
+    if target not in _installed:
+        return
+    _installed.remove(target)
+    Builder.unload_file(_kv_filename(target))
+
+
+def uninstall_all():
+    for target in _installed.copy():
+        uninstall(target=target)
