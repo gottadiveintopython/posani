@@ -25,7 +25,7 @@ class SampleApp(App):
         return Builder.load_string(KV_CODE)
 
     def on_start(self):
-        from kivy_garden.invisible_magnet import install
+        from kivy_garden.posani import install
         install()
         grid = self.root.ids.grid
         for i in range(grid.cols ** 2):
