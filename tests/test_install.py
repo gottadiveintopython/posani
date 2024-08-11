@@ -13,17 +13,17 @@ def test_global_state():
     from kivy.uix.label import Label
 
     assert _installed == set()
-    install(target=Widget)
+    install(target='Widget')
     assert _installed == {'Widget', }
     install(target='Label')
     assert _installed == {'Widget', 'Label', }
     uninstall(target='Widget')
     assert _installed == {'Label', }
-    uninstall(target=Label)
+    uninstall(target='Label')
     assert _installed == set()
 
 
-def test_install_and_uninstall():
+def test_is_active():
     from kivy_garden.posani import install, uninstall, is_active
     from kivy.uix.widget import Widget
 

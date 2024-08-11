@@ -113,28 +113,20 @@ def _kv_filename(key):
 
 
 INST_STR = '''
-#:import activate kivy_garden.posani.activate
+#:import posani_activate kivy_garden.posani.activate
 <{}>:
-    on_kv_post: activate(self)
+    on_kv_post: posani_activate(self)
 '''
 
 
-def install(*, target: str | type='Widget'):
-    if isinstance(target, str):
-        pass
-    else:
-        target = target.__name__
+def install(*, target='Widget'):
     if target in _installed:
         return
     _installed.add(target)
     Builder.load_string(INST_STR.format(target), filename=_kv_filename(target))
 
 
-def uninstall(*, target: str | type='Widget'):
-    if isinstance(target, str):
-        pass
-    else:
-        target = target.__name__
+def uninstall(*, target='Widget'):
     if target not in _installed:
         return
     _installed.remove(target)
