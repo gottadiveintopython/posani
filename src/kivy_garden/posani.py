@@ -2,6 +2,7 @@ __all__ = (
     'activate', 'deactivate', 'is_active',
     'install', 'uninstall', 'uninstall_all',
 )
+from math import exp as math_exp
 from dataclasses import dataclass
 from functools import partial
 
@@ -38,7 +39,7 @@ def activate(w: Widget, *, speed=10.0, pos_threshold=dp(2)):
     ctx = Context(w.x, w.y, mat, inv_mat)
     # NOTE: circular reference!!
     ctx.trigger_anim_pos = Clock.create_trigger(
-        partial(_anim_pos, ctx, speed, -pos_threshold, pos_threshold), 0, True)
+        partial(_anim_pos, math_exp, ctx, speed, -pos_threshold, pos_threshold), 0, True)
     w.bind(x=_on_x, y=_on_y)
     w._posani_ctx = ctx
 
@@ -74,15 +75,11 @@ def _on_y(w, y):
     ctx.trigger_anim_pos()
 
 
-def _anim_pos(ctx: Context, speed, threshold_min, threshold_max, dt):
+def _anim_pos(math_exp, ctx: Context, speed, threshold_min, threshold_max, dt):
     mat = ctx.mat
     inv_mat = ctx.inv_mat
-    p = 1.0 - dt * speed
+    p = math_exp(-speed * dt)
     still_going = False
-
-    if p <= 0.0:
-        inv_mat.x = inv_mat.y = mat.x = mat.y = 0.
-        return False
 
     if threshold_min < (x := mat.x) < threshold_max:
         inv_mat.x = mat.x = 0.
