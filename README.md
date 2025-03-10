@@ -26,9 +26,14 @@ posani.activate(widget)
 ```
 
 Install if you prefer not to manually activate each individual widget.
+All the widgets created after the installation will be automatically "activated".
 
 ```python
 posani.install()
 ```
 
-All the widgets created after the installation will be automatically "activated".
+To install on a specific type of widgets:
+
+```python
+posani.install(target="WidgetClassName")
+```
