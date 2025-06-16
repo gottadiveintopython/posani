@@ -12,8 +12,8 @@ Automatically animates changes in widget positions.
 Pin the minor version.
 
 ```text
-poetry add kivy-garden-posani@~0.2
-pip install "kivy-garden-posani>=0.2,<0.3"
+poetry add kivy-garden-posani@~0.3
+pip install "kivy-garden-posani>=0.3,<0.4"
 ```
 
 ## Usage
