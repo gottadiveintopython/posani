@@ -31,11 +31,11 @@ def is_active(w: Widget) -> bool:
     return hasattr(w, '_posani_ctx')
 
 
-def activate(w: Widget, *, speed=10.0, pos_threshold=dp(2)):
+def activate(w: Widget, *, speed=10.0, min_diff=dp(2)):
     '''
     :param speed: The speed coefficient for the animation. A larger value results in faster animation.
-    :param pos_threshold: If the difference between the widget's actual and displayed positions is less than this value,
-                          the displayed position will snap to the actual position instantly.
+    :param min_diff: If the difference between the widget's actual and displayed positions is less than this value,
+                     the displayed position will snap to the actual position instantly.
     '''
     if is_active(w):
         return
@@ -44,7 +44,7 @@ def activate(w: Widget, *, speed=10.0, pos_threshold=dp(2)):
     ctx = Context(w.x, w.y, mat, inv_mat)
     # NOTE: circular reference!!
     ctx.trigger_anim_pos = Clock.create_trigger(
-        partial(_anim_pos, math_exp, ctx, speed, -pos_threshold, pos_threshold), 0, True)
+        partial(_anim_pos, math_exp, ctx, speed, -min_diff, min_diff), 0, True)
     w.bind(x=_on_x, y=_on_y)
     w._posani_ctx = ctx
 
