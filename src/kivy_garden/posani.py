@@ -32,6 +32,11 @@ def is_active(w: Widget) -> bool:
 
 
 def activate(w: Widget, *, speed=10.0, pos_threshold=dp(2)):
+    '''
+    :param speed: The speed coefficient for the animation. A larger value results in faster animation.
+    :param pos_threshold: If the difference between the widget's actual and displayed positions is less than this value,
+                          the displayed position will snap to the actual position instantly.
+    '''
     if is_active(w):
         return
     w.canvas.before.insert(0, mat := Translate())
