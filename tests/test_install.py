@@ -9,8 +9,6 @@ def _uninstall_all():
 
 def test_global_state():
     from kivy_garden.posani import install, uninstall, _installed
-    from kivy.uix.widget import Widget
-    from kivy.uix.label import Label
 
     assert _installed == set()
     install(target='Widget')

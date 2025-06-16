@@ -4,6 +4,6 @@ bin/
 *.pyo
 /.venv/
 /.pytest_cache/
-/poetry.lock
 /dist
 /docs
+/.vscode

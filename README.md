@@ -2,10 +2,9 @@
 
 ![logo.png](logo.png)
 
-Automatically animates the transition of the widgets' position.
-Unlike the [garden.magnet](https://github.com/kivy-garden/garden.magnet), this one does not require extra widgets.
+Automatically animates changes in widget positions.
 
-[Youtube](https://youtu.be/Lb2zzaq3i0E) (This is an older implementation, and differs from the current one.)
+[Youtube](https://youtu.be/ifF7onEub1A)
 
 
 ## Installation
@@ -37,3 +36,14 @@ To install on a specific type of widgets:
 ```python
 posani.install(target="WidgetClassName")
 ```
+
+## Q&A
+
+### Why is it implemented through a widget’s canvas rather than just updating the widget's position?
+
+Some widgets, such as `BoxLayout` and `GridLayout`, constrain the positions of their children, so directly updating a widget's position isn't always possible.
+
+### Why doesn't it animate widget sizes?
+
+It used to until version 0.1.x but this feature was dropped in version 0.2.0.
+The reason is that scaling a widget using `kivy.graphics.Scale` produces visually unappealing results.
