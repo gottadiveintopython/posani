@@ -65,8 +65,8 @@ def deactivate(w: Widget):
 def _on_x(w, x):
     ctx: Context = w._posani_ctx
     mat = ctx.mat
-    mat.x = dx = ctx.last_x - x + mat.x
-    ctx.inv_mat.x = -dx
+    mat.x = diff = ctx.last_x - x + mat.x
+    ctx.inv_mat.x = -diff
     ctx.last_x = x
     ctx.trigger_anim_pos()
 
@@ -74,28 +74,28 @@ def _on_x(w, x):
 def _on_y(w, y):
     ctx: Context = w._posani_ctx
     mat = ctx.mat
-    mat.y = dy = ctx.last_y - y + mat.y
-    ctx.inv_mat.y = -dy
+    mat.y = diff = ctx.last_y - y + mat.y
+    ctx.inv_mat.y = -diff
     ctx.last_y = y
     ctx.trigger_anim_pos()
 
 
-def _anim_pos(math_exp, mat, inv_mat, speed, threshold_min, threshold_max, dt):
+def _anim_pos(math_exp, mat, inv_mat, speed, min, max, dt):
     p = math_exp(-speed * dt)
     still_going = False
 
-    if threshold_min < (x := mat.x) < threshold_max:
+    if min < (diff := mat.x) < max:
         inv_mat.x = mat.x = 0.
     else:
-        mat.x = x = x * p
-        inv_mat.x = -x
+        mat.x = diff = diff * p
+        inv_mat.x = -diff
         still_going = True
 
-    if threshold_min < (y := mat.y) < threshold_max:
+    if min < (diff := mat.y) < max:
         inv_mat.y = mat.y = 0.
     else:
-        mat.y = y = y * p
-        inv_mat.y = -y
+        mat.y = diff = diff * p
+        inv_mat.y = -diff
         still_going = True
 
     return still_going
