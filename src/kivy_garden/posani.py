@@ -44,7 +44,7 @@ def activate(w: Widget, *, speed=10.0, min_diff=dp(2)):
     ctx = Context(w.x, w.y, mat, inv_mat)
     # NOTE: circular reference!!
     ctx.trigger_anim_pos = Clock.create_trigger(
-        partial(_anim_pos, math_exp, ctx, speed, -min_diff, min_diff), 0, True)
+        partial(_anim_pos, math_exp, mat, inv_mat, speed, -min_diff, min_diff), 0, True)
     w.bind(x=_on_x, y=_on_y)
     w._posani_ctx = ctx
 
@@ -80,9 +80,7 @@ def _on_y(w, y):
     ctx.trigger_anim_pos()
 
 
-def _anim_pos(math_exp, ctx: Context, speed, threshold_min, threshold_max, dt):
-    mat = ctx.mat
-    inv_mat = ctx.inv_mat
+def _anim_pos(math_exp, mat, inv_mat, speed, threshold_min, threshold_max, dt):
     p = math_exp(-speed * dt)
     still_going = False
 
