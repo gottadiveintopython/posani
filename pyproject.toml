@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kivy-garden-posani"
-version = "0.3.0"
+version = "0.3.1"
 description = "Automatically animates changes in widget positions"
 authors = ["Nattōsai Mitō <flow4re2c@gmail.com>"]
 license = "MIT"
