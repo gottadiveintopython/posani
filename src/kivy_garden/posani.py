@@ -34,8 +34,8 @@ def is_active(w: Widget) -> bool:
 def activate(w: Widget, *, speed=10.0, min_diff=dp(2)):
     '''
     :param speed: The speed coefficient for the animation. A larger value results in faster animation.
-    :param min_diff: If the difference between the widget's actual and displayed positions is less than this value,
-                     the displayed position will snap to the actual position instantly.
+    :param min_diff: When the difference between the widget's real and displayed positions is less than this value,
+                     the displayed position will instantly snap to the real one. Defaults to 2dp.
     '''
     if is_active(w):
         return
