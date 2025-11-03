@@ -41,7 +41,7 @@ posani.install(target="WidgetClassName")
 
 ### Why is it implemented through a widget’s canvas rather than just updating the widget's position?
 
-Some widgets, such as `BoxLayout` and `GridLayout`, constrain the positions of their children, so updating a widget's position isn't always possible.
+Many layouts, such as `BoxLayout` and `GridLayout`, constrain the positions of their children, so updating a widget's position isn't always possible.
 
 ### Why doesn't it animate widget sizes?
 
