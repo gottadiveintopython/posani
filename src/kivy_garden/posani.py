@@ -42,7 +42,6 @@ def activate(w: Widget, *, speed=10.0, min_diff=dp(2)):
     w.canvas.before.insert(0, mat := Translate())
     w.canvas.after.add(inv_mat := Translate())
     ctx = Context(w.x, w.y, mat, inv_mat)
-    # NOTE: circular reference!!
     ctx.trigger_anim_pos = Clock.create_trigger(
         partial(_anim_pos, math_exp, mat, inv_mat, speed, -min_diff, min_diff), 0, True)
     w.bind(x=_on_x, y=_on_y)
@@ -57,8 +56,6 @@ def deactivate(w: Widget):
     w.canvas.before.remove(ctx.mat)
     w.canvas.after.remove(ctx.inv_mat)
     ctx.trigger_anim_pos.cancel()
-    # NOTE: break the circular reference
-    del ctx.trigger_anim_pos
     del w._posani_ctx
 
 
