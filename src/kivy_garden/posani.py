@@ -43,7 +43,7 @@ def activate(w: Widget, *, speed=10.0, min_diff=dp(2)):
     w.canvas.after.add(inv_mat := Translate())
     ctx = Context(w.x, w.y, mat, inv_mat)
     ctx.trigger_anim_pos = Clock.create_trigger(
-        partial(_anim_pos, math_exp, mat, inv_mat, speed, -min_diff, min_diff), 0, True)
+        partial(_anim_pos, math_exp, mat, inv_mat, -speed, -min_diff, min_diff), 0, True)
     w.bind(x=_on_x, y=_on_y)
     w._posani_ctx = ctx
 
@@ -77,24 +77,26 @@ def _on_y(w, y):
     ctx.trigger_anim_pos()
 
 
-def _anim_pos(math_exp, mat, inv_mat, speed, min, max, dt):
-    p = math_exp(-speed * dt)
+def _anim_pos(math_exp, mat, inv_mat, neg_speed, min, max, dt):
+    p = math_exp(neg_speed * dt)
     still_going = False
 
-    if min < (diff := mat.x) < max:
-        inv_mat.x = mat.x = 0.
+    if min < (x := mat.x) < max:
+        x = inv_x = 0.
     else:
-        mat.x = diff = diff * p
-        inv_mat.x = -diff
+        x *= p
+        inv_x = -x
         still_going = True
 
-    if min < (diff := mat.y) < max:
-        inv_mat.y = mat.y = 0.
+    if min < (y := mat.y) < max:
+        y = inv_y = 0.
     else:
-        mat.y = diff = diff * p
-        inv_mat.y = -diff
+        y *= p
+        inv_y = -y
         still_going = True
 
+    mat.xy = x, y
+    inv_mat.xy = inv_x, inv_y
     return still_going
 
 
