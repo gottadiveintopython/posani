@@ -1,6 +1,6 @@
 [project]
 name = "kivy-garden-posani"
-version = "0.3.2.dev0"
+version = "0.3.2"
 description = "Automatically animates changes in widget positions"
 license = "MIT"
 authors = [{ name = "Nattōsai Mitō", email = "flow4re2c@gmail.com" }]
@@ -11,7 +11,7 @@ readme = "README.md"
 Repository = "https://github.com/gottadiveintopython/posani"
 
 [tool.uv.build-backend]
-module-name = "kivy_garden"
+module-name = "kivy_garden.posani"
 namespace = true
 
 [dependency-groups]
